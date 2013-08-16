@@ -1,0 +1,113 @@
+body
+{
+	background-color : rgb(255,255,255);
+	color : black;
+
+}
+
+#upper
+{
+	float : right;
+	width : 80%;
+	height : 20%;
+}
+#buttons
+{
+	width : 48%;
+	float : left;
+	margin-right : auto;
+	margin-left : auto;
+	margin-top : 50px;
+	text-align : center;
+}
+#start
+{
+	color : green;
+	font-size : 20px;
+	margin-top : auto;
+	margin-bottom : auto;
+}
+#quit
+{
+	color : red;
+	font-size : 20px;
+	margin-top : auto;
+	margin-bottom : auto;
+}
+#attempts
+{
+	color : green;
+	font-size : 30px;
+	font-family : "impact", fantasy;
+	width : 15%;
+	margin : auto;
+	float : right;
+	text-align : center;
+	background-color : rgb(216,216,216);
+}
+.brain
+{
+	width : 20%;
+	margin-right : 40px;
+	float : right;
+}
+#screens
+{
+	float : right;
+	margin : auto;
+	width : 80%;
+	padding : 0px;
+}
+#playerScreen
+{
+	border : 1px solid;
+	border-color : black; 
+	margin:auto;
+	width :48%;
+}
+#brainScreen
+{
+	border : 1px solid;
+	border-color : black; 
+	margin:auto;
+	width :48%;
+	background-color : white;
+}
+#marge
+{
+	float : left;
+	width : 150px;
+	background-color : rgb(216,216,216);
+	color : black;
+	text-align : center;
+	padding : 5px;
+	margin-left : auto;
+}
+.instructions
+{
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+#screenImage
+{
+	display : none;
+}
+footer
+{
+	border : 3px black dotted;
+	margin-top : 20px;
+	padding : 10px;
+	text-align : center;
+	clear : both;
+}
+h1
+{
+	font-size : 25px;
+	text-align : center;
+	background-color : yellow;
+}
+h2
+{
+	font-size : 17px;
+	text-align : center;
+}
