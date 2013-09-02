@@ -176,7 +176,8 @@ Letter = function(char)
 		this.bars[6].initDraw(offsetX,offsetY+letterHeight, letterWidth,
 											letterHeight, this.map[6]);
 	}
-	//Color the first bar different between this and l in red
+	//Color the first bar different between this and l in red and 
+	//return 1. return O if the letter are the same.
 	this.compareTo=function(l)
 	{
 		for(var i=0; i<7; i++)
@@ -190,7 +191,37 @@ Letter = function(char)
 		}
 		return 0;
 	}
-	
+	//return [number of bars clicked in this and not colored in l,
+	//	number of bars colored in l and not clicked in this]
+	this.compareAllTo=function(l)
+	{
+		var thisAndNotL=0;
+		var lAndNotThis=0;
+		for(var i=0; i<7; i++)
+		{
+			if(this.map[i]>l.map[i])
+			{
+				thisAndNotL++;
+			}
+			else if(this.map[i]<l.map[i])
+			{
+				lAndNotThis++;
+			}
+		}
+		return [thisAndNotL, lAndNotThis];
+	}
+	//return number of bars of the letter
+	this.getNbBars=function()
+	{
+		var tot=0;
+		for(var i=0; i<this.map.length; i++)
+			if(this.map[i]==1)
+				tot++;
+				
+		return tot;
+	}
+	//return the letter drawn by the clicked bars and 'i' if the form
+	//drawn does not fit to a letter.
 	this.getChar=function()
 	{
 		for(var i=0; i<7; i++)

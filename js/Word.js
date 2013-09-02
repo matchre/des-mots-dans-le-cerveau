@@ -10,6 +10,15 @@ Word = function(string)
 		else
 			this.letters[i]=new Letter(string.charAt(i));
 	}
+	//return the number of bars in this
+	this.getNbBars = function()
+	{
+		var tot = 0;
+		for(var k=0; k<this.letters.length; k++)
+			tot+=this.letters[k].getNbBars();
+		
+		return tot;
+	}
 	//draw the word in playerScreen
 	this.draw=function()
 	{
@@ -65,7 +74,6 @@ Word = function(string)
 		
 		ctx.strokeStyle = "grey";
 		ctx.lineWidth = 1;
-		ctx.fillStyle
 		ctx.beginPath();
 		ctx.moveTo(oX,oY);
 		ctx.lineTo(-ux+oX,-4*uy+oY);
@@ -79,7 +87,12 @@ Word = function(string)
 		if((this.letters[1].map[5]==1 && !isLeft)
 		|| (this.letters[2].map[4]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[1].map[5]==0 && !isLeft)
+				|| (objWord.letters[2].map[4]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
+			
 			ctx.fill();
 		}
 		
@@ -96,7 +109,11 @@ Word = function(string)
 		if((this.letters[1].map[6]==1 && !isLeft)
 		|| (this.letters[2].map[6]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[1].map[6]==0 && !isLeft)
+				|| (objWord.letters[2].map[6]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -113,7 +130,11 @@ Word = function(string)
 		if((this.letters[1].map[4]==1 && !isLeft)
 		|| (this.letters[2].map[5]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+				if(mode==1 && ((objWord.letters[1].map[4]==0 && !isLeft)
+			|| (objWord.letters[2].map[5]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -131,7 +152,11 @@ Word = function(string)
 		if((this.letters[1].map[3]==1 && !isLeft)
 		|| (this.letters[2].map[3]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[1].map[3]==0 && !isLeft)
+				|| (objWord.letters[2].map[3]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -148,7 +173,11 @@ Word = function(string)
 		if((this.letters[1].map[2]==1 && !isLeft)
 		|| (this.letters[2].map[1]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && (objWord.letters[1].map[2]==0 && !isLeft)
+				|| (objWord.letters[2].map[1]==0 && isLeft))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -165,7 +194,12 @@ Word = function(string)
 		if((this.letters[1].map[0]==1 && !isLeft)
 		|| (this.letters[2].map[0]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[1].map[0]==0 && !isLeft)
+				|| (objWord.letters[2].map[0]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
+	
 			ctx.fill();
 		}
 		
@@ -182,7 +216,12 @@ Word = function(string)
 		if((this.letters[1].map[1]==1 && !isLeft)
 		|| (this.letters[2].map[2]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[1].map[1]==0 && !isLeft)
+				|| (objWord.letters[2].map[2]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
+		
 			ctx.fill();
 		}
 	}
@@ -209,7 +248,11 @@ Word = function(string)
 		if((this.letters[0].map[5]==1 && !isLeft)
 		|| (this.letters[3].map[4]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[0].map[5]==0 && !isLeft)
+				|| (objWord.letters[3].map[4]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -226,7 +269,11 @@ Word = function(string)
 		if((this.letters[0].map[6]==1 && !isLeft)
 		|| (this.letters[3].map[6]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[0].map[6]==0 && !isLeft)
+			|| (objWord.letters[3].map[6]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -243,7 +290,11 @@ Word = function(string)
 		if((this.letters[0].map[4]==1 && !isLeft)
 		|| (this.letters[3].map[5]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[0].map[4]==0 && !isLeft)
+			|| (objWord.letters[3].map[5]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -261,7 +312,11 @@ Word = function(string)
 		if((this.letters[0].map[3]==1 && !isLeft)
 		|| (this.letters[3].map[3]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[0].map[3]==0 && !isLeft)
+				|| (objWord.letters[3].map[3]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else	
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -278,7 +333,11 @@ Word = function(string)
 		if((this.letters[0].map[2]==1 && !isLeft)
 		|| (this.letters[3].map[1]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[0].map[2]==0 && !isLeft)
+				|| (objWord.letters[3].map[1]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else	
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 		
@@ -295,6 +354,10 @@ Word = function(string)
 		if((this.letters[0].map[0]==1 && !isLeft)
 		|| (this.letters[3].map[0]==1 && isLeft))
 		{
+			if(mode==1 && ((objWord.letters[0].map[0]==0 && !isLeft)
+				|| (objWord.letters[3].map[0]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else	
 			ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
@@ -312,11 +375,16 @@ Word = function(string)
 		if((this.letters[0].map[1]==1 && !isLeft)
 		|| (this.letters[3].map[2]==1 && isLeft))
 		{
-			ctx.fillStyle='#99FF33';
+			if(mode==1 && ((objWord.letters[0].map[1]==0 && !isLeft)
+				|| (objWord.letters[3].map[2]==0 && isLeft)))
+				ctx.fillStyle='yellow';
+			else	
+				ctx.fillStyle='#99FF33';
 			ctx.fill();
 		}
 	}
-
+	
+	//return a pointer on the bar containing the point (x,y)
 	this.getBar=function(x,y)
 	{
 		for(var i=0;i<4; i++)
@@ -329,7 +397,7 @@ Word = function(string)
 		}
 		return -1;
 	}
-	
+	//return the string created thanks to the clicked bar
 	this.getString=function()
 	{
 		var s='';
@@ -337,7 +405,7 @@ Word = function(string)
 			s+=this.letters[i].getChar();
 		return s;
 	}
-	
+	//launch letter.compareTo for each letter of the word
 	this.compareTo=function(word)
 	{
 		for(var i=0;i<4; i++)
@@ -347,6 +415,20 @@ Word = function(string)
 		}
 		console.log("ERROR : word==this");
 	}
-	
+	//return [number of bars clicked in this and not colored in word,
+	//	number of bars colored in word and not clicked in this]
+	this.compareAllTo=function(word)
+	{
+		var thisAndNotWord=0;
+		var wordAndNotThis=0;
+		for(var i=0;i<4; i++)
+		{
+			var t=this.letters[i].compareAllTo(word.letters[i]);
+			thisAndNotWord+=t[0];
+			wordAndNotThis+=t[1];
+		}
+		return [thisAndNotWord, wordAndNotThis];
+	}
+
 }
 

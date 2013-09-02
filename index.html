@@ -8,105 +8,111 @@
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="style.css"/>
 
-<title>Des Mots dans le cerveau</title>
+<title>Des mots dans le cerveau</title>
 
 </head>
 
 <body>
-	<h1>Des Mots dans le cerveau</h1>
-	
-<div id=marge>
-		<h2>Niveau</h2>
-			<p id=niv> 
-				<button id='modeEasy'>Facile </button> 
-				<button id='modeNormal'>Normal </button>
-			</p> 
-			
-		<h2>Présentation</h2>
-				<p id=instructionsDefault class=instructions>
-					Lorsqu'un <i id=mot>mot mystère</i> vous est montré,
-					cela active les
-					<a href="http://fr.wikipedia.org/wiki/Cortex_visuel">
-					aires visuelles</a> de votre cerveau.
-					Le but de ce jeu est de reconstituer un mot mystère
-					à partir d'un modèle qui repésente l'activité
-					cérébrale des aires visuelles du cerveau lorsqu'une
-					personne observe ce mot.
-					Une fois le jeu lancé, il vous suffira de survoler
-					avec la souris les différentes zones du jeu pour
-					obtenir des informations complémentaires les
-					concernants.
-					Pour commencer, choisissez un niveau et cliquez sur
-					DEMARRER.
-				</p>
-				
-				<p id=instructionsAttempts class=instructions>
-					Nombre de coups restants.
-				</p>
-				
-				<p id=instructionsImg class=instructions>
-					Les aires visuelles du cerveau qui sont sollicitées
-					lorsqu'un objet est placé dans le champ visuel d'une
-					personne sont représentées en vert sur ces images.
-				</p>
-				
-				<p id=instructionsPlayerScreen class=instructions>
-					Cliquez sur les barres de la grille pour
-					reconstituer le mot mystère en un minimum de coup.
-					Lorsque vous cliquez sur le bouton d'aide (niveau
-					facile uniquement), la barre qui s'affiche en rouge
-					vous indique où se trouve l'une de vos erreurs.
-				</p>
-				
-				<p id=instructionsBrainScreen class=instructions>
-					<i style='color:orange'>Partie supérieure</i> :
-					regardez attentivement ce modèle, il s'agit d'une
-					représentation fidèle de l'activité des aires
-					visuelles cérébrales d'une personne visualisant le
-					mot mystère qu'il vous faut découvrir.
-					<i style='color:purple'>Partie inférieure
-					</i> :
-					chaque clic sur la grille de l'écran à gauche de
-					celui-ci allume une cible qu'il vous faudra comparer
-					au modèle.
-				</p>
-	</div>
-<div id=upper>
-	<div id=buttons>
-		<button id='start'>
-			<span>DEMARRER</span>
-		</button>
-		<button id='quit'><span>ABANDONNER</span></button>
-		<div id="attempts"
-			title="Nombre de coups restants">0
+		<h1>Des mots dans le cerveau</h1>
+		
+	<div id=upper>
+		
+		<div id=buttons>
+			<button id='instructionsButton'
+			title="Cliquez ici puis cliquez sur une zone de l'écran pour obtenir des informations"
+			>?</button>
+			<p>
+				<button id='quit'>
+					<span>Informations/ABANDONNER</span>
+				</button>
+			</p>
+			<p><button id='help'><span>AIDE</span></button></p>
+			<p id='textAttempts'>Nombre de coups restants : 
+				<span id="attempts">0</span>
+			</p>
 		</div>
+		<img class=brain src="img/v1_rh.png" alt="Cerveau - lobe droit">
+		<img class=brain src="img/v1_lh.png" alt="Cerveau - lobe gauche">
 	</div>
-	<img class=brain src="img/v1_rh.png" alt="Cerveau - lobe droit">
-	<img class=brain src="img/v1_lh.png" alt="Cerveau - lobe gauche">
-</div>
-<div id=screens>
-	<canvas id="playerScreen"> 
-		<p>
-		Si les images ne s'affichent pas, essayez de recharger la page.
-		Si le problème persiste, il est possible que votre navigateur ne
-		supporte pas canvas : il faut qu'il reconnaisse HTML5.
-		Internet Explorer le supporte à partir de la version 9.
-		</p>
-	</canvas>
+	<div id=screens>
+		<canvas id="playerScreen"> 
+			<p>
+			Si les images ne s'affichent pas, essayez de recharger la page.
+			Si le problème persiste, il est possible que votre navigateur ne
+			supporte pas canvas : il faut qu'il reconnaisse HTML5.
+			Internet Explorer le supporte à partir de la version 9.
+			</p>
+		</canvas>
+		
+		<canvas id="brainScreen"></canvas>
+	</div>
+	<div id='shadowing'></div>
+	<div id='niv'>
+		<h1>Choisissez un niveau</h1>
+		<p><button id='modeEasy'>Facile </button></p>
+		<p><button id='modeNormal'>Normal </button></p>
+		<button class='rulesButton'><span>Règles du jeu</span></button>
+	</div>
 	
-	<canvas id="brainScreen"></canvas>
-</div>
+	<div id='instructions'>
+		<h1>Instructions</h1>
+		<p>
+			<button id='start'><span>Reprendre la partie</span></button>
+		</p>
+		<p>
+			<button class='rulesButton'>
+				<span>Règles du jeu</span>
+			</button>
+		</p>
+		<p id='instructionsImg' class='instructions'>
+			Lorsqu'un mot mystère vous est montré,
+			cela active les
+			<a href="http://fr.wikipedia.org/wiki/Cortex_visuel">
+			aires visuelles</a> de votre cerveau.
+			Celles-ci sont représentées en vert sur ces images.
+		</p>
+			
+		<p id='instructionsPlayerScreen' class='instructions'>
+			Cliquez sur les barres de la grille pour
+			reconstituer le mot mystère en un minimum de coup.
+			Lorsque vous cliquez sur le bouton d'aide (lorsqu'il
+			est disponible), la barre qui s'affiche en rouge
+			vous indique où se trouve l'une de vos erreurs (
+			barre non cliquée ou barre cliquée qui n'aurait pas dû
+			l'être).
+		</p>
+		
+		<p id='instructionsBrainScreen' class='instructions'>
+			<i style='color:orange'>Partie supérieure</i> :
+			regardez attentivement ce modèle, il s'agit d'une
+			représentation fidèle de l'activité des aires
+			visuelles cérébrales d'une personne visualisant le
+			mot mystère qu'il vous faut découvrir.
+			<i style='color:purple'>Partie inférieure
+			</i> :
+			chaque clic sur la grille de l'écran à gauche de
+			celui-ci allume une cible verte qu'il vous faudra comparer
+			au modèle. En mode facile, la cible d'une barre cliquée et
+			qui n'aurait pas dû l'être s'affiche en jaune.
+		</p>
+		
+	</div>
+	
+	<div id="rulesDiv">
+		<div id="imgDiv">
+		<img id="rulesImg" src="img/tutorial.png" alt="Image de règle">
+		</div>
+		<button id='returnButton'>Retour</button>
+		<button id='zoom'>Zoom</button>
+	</div>
+	
 	<img id="screenImage" src="img/screen.png" alt="screen">
 	<script type="text/javascript" src="vendor/jquery-1.10.2.js">
 	</script>
 	<script type="text/javascript" src="js/Letter.js"></script>
 	<script type="text/javascript" src="js/Word.js"></script>
-<!--
-	<script type="text/javascript" src="js/Attempt.js"></script>
--->
 	<script type="text/javascript" src="js/effects.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 
 </body>
-
 </html>

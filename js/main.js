@@ -1,9 +1,16 @@
 /*main.js*/
+/*main.js : Contains the game process*/
 
-var ie = (document.all && !window.opera)?true:false;
-var quit;//quit if quit==1
-var mode;//Mode: 0 : debug; 1 : easy; 2 : normal
-var help=3;
+/*Word.js : contains the definition and functions linked to the object
+ * Word. */
+
+/*Letter.js : contains the definition and functions linked to the object
+ * Letter (a Word contains four Letters (a Letter can be the 
+ * one associated to ''))*/
+
+/*effects.js : contains the functions linked to each button and some
+ * modifications of the page appearance*/
+
 /*********************/
 //CONSTANTS TO BE MODIFIED
 
@@ -56,10 +63,27 @@ var words = [
         "spas",
         "sucs"];
 
-//number of attempts authorized
-var attemptsLimit = 31;
+//attemptsLimit[0] = number of attempts authorized in easy mode
+//attemptsLimit[1] = number of attempts authorized in normal mode
+//if you does not want to active the counter for a level, set the
+//corresponding attemptsLimit to 0.
+var attemptsLimit = [50,30];
+//number of times you can click the help button in easy mode
+//set HELP to 0 if you do not want that help.
+var HELP=3;
+//printAnswer[0] -> print answer when the player loose in easy mode
+//printAnswer[1] -> print answer when the player loose in normal mode
+//if you does not want to print the answer for a level, set the
+//corresponding printAnswer to false.
+var printAnswer = [true, false];
+//if attemptsLimit==0, number of attempts from which the #quit button
+//is going to blink every 3 attempt
+var ALERT_QUIT=30;
 
 /***************/
+//GOBAL VARIABLES
+var quit;//quit if quit==1
+var mode;//Mode: 0 : debug; 1 : easy; 2 : normal
 var running=0;//running if running==1
 var attempts =0;//number of attempts left
 var mode;//Mode: 0 : debug; 1 : easy; 2 : normal; 3 : hard
@@ -68,7 +92,8 @@ var pool = new Array();
 var goal;
 var objWord;//The Word from words that the player has to find
 var playerWord;//The Word submitted by the player
-
+var helpCursor=false;//Help mode to open the instructions' pop-up
+var switchZoom=false;//If true then, zoom in (zoom out if not)
 $(function() {//we wait for the DOM
 	initCanvas();
 	initEffects();
@@ -76,127 +101,68 @@ $(function() {//we wait for the DOM
 	initPool();
 	initGame();
 });
-/********/
-function initButtons()
-{
-	$("#start").click(function() {
-			if(mode==-1)
-			{
-				alert('Veuillez choisir un niveau s\'il vous plaît');
-				drawMode();	
-			}
-			else if(running==0)
-			{
-				if(mode!=2)
-					$("span", this).text('AIDE '+help);
-				else
-					$(this).css('display','none');
-				running=1;//Begin the game
-				start();
-			}
-			else						
-			{
-				helpPlayer();
-			}
-	});
-	$('#quit').click(function() {
-		if(quit==1)
-		{
-			initGame();
-		}
-		else if(running==0)
-			return;
-		else if(confirm('Voulez-vous vraiment quitter ?'))
-			{
-				gameOver();
-			}
-	});
-	$('#modeEasy').click(function() {
-		if(running==1)
-		{
-			alert('Vous devez recommencer une nouvelle '+ 
-			'partie pour pouvoir changer de niveau');
-			return;
-		}
-		mode=1;
-		drawMode();
-		});
-	$('#modeNormal').click(function() {
-		if(running==1)
-		{
-			alert('Vous devez recommencer une nouvelle '+ 
-			'partie pour pouvoir changer de niveau');
-			return;
-		}
-		mode=2;
-		drawMode();
-	});
-}	
-/*******/
-function drawMode()
-{	
-	$('#start span').text('DEMARRER');
-	$('#quit span').text('ABANDONNER');
-	
-	switch(mode)
-	{
-		case 0 :
-			$('#modeEasy').css('color','grey');
-			$('#modeNormal').css('color','grey');
-			break;
-		case 1 : 
-			$('#modeEasy').css('color','red');
-			$('#modeNormal').css('color','grey');
-			charMode='Facile';
-			break;
-		case 2 : 
-			$('#modeEasy').css('color','grey');
-			$('#modeNormal').css('color','red');
-			charMode='Normal';
-			break;
-		
-		default : 
-			$('#modeEasy').css('color','black');
-			$('#modeNormal').css('color','black');
-			return;
-	}	
-	
-	//~ if(mode!=0)
-		//~ alert('Vous avez choisi le niveau ' + charMode);
-}
 
+/*******/
+//show the level menu and reset all variables
 function initGame()
 {
 	running=0;
 	quit=0;
 	mode=-1;
-	help=3;
-	$('.instructions').css('display','none');
-	$("#instructionsDefault").css('display', 'inherit');
-	$('#start').css('display', 'inline');
-	drawMode();
+	helpCursor=false;
+	help=HELP;
+	$('#shadowing').css('display','block');
+	$('#instructions').css('display','none');
+	$('#niv').css('display','block');
+	$('#quit span').text('Informations/ABANDONNER');
+	
 	//we reset both canvas
 	resetCanvas();
 	//clear the number of attempts printer
     $('#attempts').text(''); 
 }
-
+//build and show the game surface
+//initialize some variables for the game.
 function start()
 {
+	//show the game surface
+	$('#niv').css('display','none');
+	$('#instructions').css('display','none');
+	$('#shadowing').css('display','none');
+	//we show the help button if mode easy and hide it if not :
+	if(mode==1 && HELP!=0)
+	{
+		$("#help span").text('AIDE : '+help+' coups disponibles');
+		$('#help').css('display','inline');
+	}
+	else
+		$('#help').css('display','none');
+	//we show the number of attempts played instead of the number of
+	//attempts left if attemptsLimit==0
+	if(attemptsLimit[mode-1]==0)
+		$('#textAttempts').css('display','none')
 	//We chose the word to find : words[goal]
 	running=1;
 	goal = getRandomNumber();
-	attempts=attemptsLimit;
+	attempts=attemptsLimit[mode-1];
 	objWord = new Word(words[goal]);
-	//~ objWord.draw();
-	/*We construct the game surface*/
-	$('#attempts').css('color','green');
-	$('#attempts').text(attempts);
 	
+	/*We fill the game surface*/
+	if(attemptsLimit[mode-1]==0)
+		$('#textAttempts').css('display','none');
+	else
+	{
+		$('#textAttempts').css('display','block');
+		$('#attempts').css('color','green');
+		$('#attempts').text(attempts);
+	}
 	playerWord = new Word('');
     playerWord.draw();
+    playerWord.drawBrain(false);
 	objWord.drawBrain(true);
 }
+//one attempt : launched each time the player click a bar on
+//playerScreen
 function attempt()
 {
 	if(attempts==2)
@@ -208,48 +174,78 @@ function attempt()
 	var str = playerWord.getString();
 	playerWord.drawBrain(false);
 	attempts--;
-	
-	/*****/	
-	if(attempts<=3)
-		$('#attempts').css('color','orange');
-	if(attempts<=1)
-		$('#attempts').css('color','red');
-	
-	$('#attempts').text(attempts);
+	/*****/
+	if(attemptsLimit[mode-1]!=0)
+	{
+		if(attempts<=5)
+			$('#attempts').css('color','orange');
+		if(attempts<=3)
+			$('#attempts').css('color','red');
+		
+		$('#attempts').text(attempts);
+	}
+	else if(attempts<-ALERT_QUIT && attempts%3==0)
+	{
+		var timeLeft=6;
+		var timer = setInterval(function(){
+		timeLeft--;
+		if(timeLeft%2==0)
+		{
+			$('#quit').css('color','red');
+			$('#quit').css('background-color','white');
+		}
+		else
+		{
+			$('#quit').css('color','white');
+			$('#quit').css('background-color','red');
+			console.log('coucou');
+		}
+		if(timeLeft<=0)
+		{
+			clearInterval(timer);
+			$('#quit').css('color','red');
+			$('#quit').css('background-color','white');
+		}
+		},500);
+	}
 	/******/
-	//~ console.log(str);
 	if(str==words[goal])
 		won();
 	else if(attempts==0)
 		gameOver();	
 }
-
+//the player as lost...launch initGame()
 function gameOver()
 {
-	alert('Vous avez perdu en utilisant '+(attemptsLimit-attempts)
-			+' essais. Le mot à trouver va s\'afficher sur l\'écran.');
-	resetCanvas();
-	objWord.draw();
-	objWord.drawBrain(true);
-	objWord.drawBrain(false);
-	quit=1;
-	$("span", '#quit').text('Nouvelle partie');
+	alert('Désolé vous avez perdu...\n'
+			+'Nombre de coups utilisés : '+
+			(attemptsLimit[mode-1]-attempts)+'\n'
+			+'Meilleur score possible était : '+ 
+			objWord.getNbBars()+' coups.');
+	if(printAnswer[mode-1])//show the answer if true
+	{
+		resetCanvas();
+		objWord.draw();
+		objWord.drawBrain(true);
+		objWord.drawBrain(false);
+		quit=1;
+		$('#quit span').text('Nouvelle partie');
+		return;
+	}
+	initGame();
 }
-
+//the player has won... launch initGame
 function won()
 {
-	alert('Félicitations, vous avez gagné en utilisant '+
-			(attemptsLimit-attempts)
-			+' essais. Le mot à trouver va s\'afficher sur l\'écran');
+	alert('Félicitations, vous avez gagné.\n'
+			+'Nombre de coups utilisés : '+
+			(attemptsLimit[mode-1]-attempts)+'\n'
+			+'Meilleur score possible était : '+ 
+			objWord.getNbBars()+' coups.');
 	
-	resetCanvas();
-	objWord.draw();
-	objWord.drawBrain(true);
-	objWord.drawBrain(false);
-	quit=1;
-	$("span", '#quit').text('Nouvelle partie');
+	initGame();
 }
-
+//reset both of the canvas and draw lines on brainScreen
 function resetCanvas()
 {
 	var canvas0 = document.getElementById('brainScreen');
@@ -273,7 +269,7 @@ function resetCanvas()
     ctx1.drawImage(img,0,0,$('#playerScreen').width(),
 										$('#playerScreen').height());
 }
-
+//reset only the bottom part of brainScreen
 function resetBottomBrainCanvas()
 {
 	var canvas = document.getElementById('brainScreen');
@@ -286,7 +282,8 @@ function resetBottomBrainCanvas()
     ctx.stroke();
     ctx.closePath();
 }
-//return a random number from pool and delete it
+//return a random number from pool and delete it. If pool is empty,
+//call initPool
 function getRandomNumber()
 {
 	if(pool.length==0)
@@ -295,17 +292,18 @@ function getRandomNumber()
 	var n = pool.splice(r, 1);
 	return n;
 }
+//fill pool with all number from 0 to words.length-1
 function initPool()
 {
 	for(var i=0; i<words.length; i++)
 		pool.push(i);
 }
-
+//print in red the first false answer
 function helpPlayer()
 {
 	if(mode==2 || help==0)
 		return;
 	playerWord.compareTo(objWord);
 	help--;
-	$("span", "#start").text('AIDE '+help);
+	$("#help span").text('AIDE : '+help+' coups disponibles');
 }
